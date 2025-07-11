@@ -42,7 +42,7 @@ The application allows employees to book apartments or beds according to their d
 | Category | Designation                | Booking Permission               | Sharing |
 | -------- | -------------------------- | -------------------------------- | ------- |
 | 1        | Project Engineer and below | Cottage (single bed only)        | Yes     |
-| 2        | Senior till Manager        | One room only (shared apartment) | Yes     |
+| 2        | Senior till before Manager        | One room only (shared apartment) | Yes     |
 | 3        | Manager and above          | Entire apartment only            | No      |
 
 - If any **cottage** is filled, show **room unavailable** for Category 2 and apartment unavailable for Category 3.
