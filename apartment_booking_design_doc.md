@@ -13,9 +13,12 @@ The project will be developed in the following phases:
 |     - Booking Flow Implementation              | 1 day          |
 |     - Admin Dashboard & Drag-Drop UI           | 1 day          |
 |     - Mail Request Handling                    | 4 hours        |
+|     - Analytics Dashboard                      | 4 hours        |
 | Testing                                        | 1 day          |
 | Deployment & Integration with Existing Portals | 1 day          |
-|                                                |                |
+
+|   |
+| - |
 
 | **Total Estimated Time** | **7 days** |
 | ------------------------ | ---------- |
@@ -24,15 +27,15 @@ The project will be developed in the following phases:
 
 ## Problem Statement
 
-**"Our company needs a unified portal for apartment booking based on employee roles, with dynamic configuration and fallback mechanisms."**
+**"Our company needs a unified portal for apartment booking based on employee roles, with dynamic configuration, analytics, and fallback mechanisms."**
 
-Currently, employees lack a structured way to book company apartments. We aim to create a centralized single-page application to manage apartment bookings by role and availability, with fallback options through admin intervention. The application should support drag-and-drop apartment configuration and integrate with existing portals.
+Currently, employees lack a structured way to book company apartments. We aim to create a centralized single-page application to manage apartment bookings by role and availability, with fallback options through admin intervention. The application should support drag-and-drop apartment configuration, usage analytics, and integrate with existing portals.
 
 ## Implementation/Design
 
 ### Purpose and Usage
 
-The application allows employees to book apartments or beds according to their designation. Role-based rules restrict booking capabilities, and when a booking cannot be fulfilled, a request system forwards queries to admins for further handling. Admins can dynamically build apartment structures and assign cities.
+The application allows employees to book apartments or beds according to their designation. Role-based rules restrict booking capabilities, and when a booking cannot be fulfilled, a request system forwards queries to admins for further handling. Admins can dynamically build apartment structures, assign cities, and view usage analytics.
 
 ### Booking Rules Based on Role
 
@@ -42,8 +45,8 @@ The application allows employees to book apartments or beds according to their d
 | 2        | Senior till Manager        | One room only (shared apartment) | Yes     |
 | 3        | Manager and above          | Entire apartment only            | No      |
 
-- If any **cottage** is filled, show **room unavailable** for Category 2 and 3.
-- If any **room/cottage** is filled in an apartment, show **apartment unavailable** to Category 3.
+- If any **cottage** is filled, show **room unavailable** for Category 2 and apartment unavailable for Category 3.
+- If any **room or cottage** is filled in an apartment, show **apartment unavailable** to Category 3.
 - When unavailable, allow users to send a **[Send Request]** to Admin for manual handling.
 
 ### Admin Features
@@ -54,6 +57,7 @@ The application allows employees to book apartments or beds according to their d
   - Add Rooms to Apartments.
   - Add Cottages (beds) to Rooms.
 - Configure apartment layout similar to BookMyShow theater booking style.
+- View usage analytics for apartments, rooms, and cottages.
 
 ### Integration Points
 
@@ -70,7 +74,7 @@ PostgreSQL Database Tables:
 - `Apartments (Id, CityId, Name)`
 - `Rooms (Id, ApartmentId, Name)`
 - `Cottages (Id, RoomId, Name)`
-- `Bookings (Id, BookedByUserId, BookingForUserId, CottageId?, RoomId?, ApartmentId, DateRange)`
+- `Bookings (Id, BookedByUserId, BookingForUserId, CottageId?, RoomId?, ApartmentId, DateFrom, DateTo)`
 - `Requests (Id, RequestedByUserId, BookingForUserId, Reason, Status, CreatedAt)`
 
 ### Booking Blocking Logic
@@ -116,15 +120,54 @@ This is determined dynamically when the frontend queries availability for a spec
 - If apartment is booked → entire layout disabled.
 - If a room is booked → disable the room and its beds.
 - If a cottage is booked → disable just that bed.
-- Based on selected user’s role, UI adapts to show **unavailable** with option to **[Send Request]** if blocked.
+- Based on selected user’s role:
+  - **Manager** will see apartment unavailable if **any room or bed** is occupied.
+  - **Senior** will see room unavailable if **any bed in that room** is occupied.
+  - **PE** will only see unavailable if the specific cottage is booked.
+- In all cases where a booking is blocked, show **[Send Request]** option.
 
-### Sequence Diagram (Visual Not Included)
+### Flow of Application
 
-1. User logs in using Outlook SSO.
-2. User selects city → apartment → structure.
-3. Based on selected person's role, sees filtered availability.
-4. Books a space OR sends a request if unavailable.
-5. Admin receives request email and handles it via dashboard.
+1. **Login:**
+
+   - User logs in with Microsoft Outlook SSO.
+   - Role is retrieved.
+
+2. **Select Booking Dates:**
+
+   - User is shown a calendar to choose `From` and `To` dates.
+
+3. **Fetch Available Apartments:**
+
+   - After selecting the dates, a list of all apartments is shown.
+   - Both **available** and **unavailable** apartments are clearly marked.
+   - Backend filters availability based on selected date range and target user role.
+
+4. **Select Apartment & View Layout:**
+
+   - User clicks on an apartment to view room/cottage layout.
+   - UI disables rooms/cottages based on booking logic.
+
+5. **Book or Request:**
+
+   - If a valid booking space is found → Proceed with booking.
+   - If all options are blocked → **[Send Request]** button enabled.
+
+6. **Admin Handles Requests:**
+
+   - Admin receives notification.
+   - Admin assigns alternate accommodation or reassigns cancelled slots.
+
+7. **Admin Analytics View:**
+
+   - Admin can view usage charts (e.g., line/bar chart showing occupancy over time).
+   - Filters available:
+     - By City, Apartment, Room, Cottage
+     - By Date Range
+   - Graph shows:
+     - Number of bookings
+     - Number of users
+     - Peak usage times
 
 ### UI/UX
 
@@ -132,7 +175,9 @@ This is determined dynamically when the frontend queries availability for a spec
 - Admin drag-drop UI: `react-beautiful-dnd` or similar.
 - City & Apartment filter.
 - Visual layout for selecting beds/rooms.
+- Calendar for date selection.
 - Request button on unavailable layout.
+- Admin dashboard with graphs (using Chart.js / Recharts).
 
 ### Non-Functional Requirements (NFRs)
 
@@ -141,6 +186,7 @@ This is determined dynamically when the frontend queries availability for a spec
 - **Performance:** Fast availability filtering based on role.
 - **Modular Admin UI:** Should support future extensions (e.g., maintenance tracking).
 - **Resilience:** Request system fallback when bookings are blocked.
+- **Analytics:** Admin can analyze usage trends via charts with filters.
 
 ## Design Explanation
 
@@ -170,5 +216,5 @@ This is determined dynamically when the frontend queries availability for a spec
 
 ## Summary
 
-A role-based apartment booking portal integrated into existing office systems, with Outlook-based login, request handling, and admin-configurable layouts. Efficient, intuitive, and adaptable to future use cases.
+A role-based apartment booking portal integrated into existing office systems, with Outlook-based login, analytics, request handling, and admin-configurable layouts. Efficient, intuitive, and adaptable to future use cases.
 
