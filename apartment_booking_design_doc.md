@@ -17,7 +17,14 @@ The project will be developed in the following phases:
 | Testing                                        | 1 day          |
 | Deployment & Integration with Existing Portals | 1 day          |
 
+|   |
+| - |
 
+|   |
+| - |
+
+|   |
+| - |
 
 | **Total Estimated Time** | **7 days** |
 | ------------------------ | ---------- |
@@ -88,50 +95,61 @@ This is determined dynamically when the frontend queries availability for a spec
 
 ### Example API: `/api/bookings/availability?date=2025-07-11`
 
-#### Updated Response (Flat Structure):
+#### Updated Response (Nested Tree Structure):
 
 ```json
-[
-  {
-    "apartmentId": "APT_001",
-    "roomId": null,
-    "cottageId": null,
-    "level": "Apartment",
+{
+  "APT_001": {
     "status": "booked",
-    "blockedBy": "Manager1"
+    "blockedBy": "Manager1",
+    "rooms": null
   },
-  {
-    "apartmentId": "APT_002",
-    "roomId": "Room_01",
-    "cottageId": null,
-    "level": "Room",
-    "status": "booked",
-    "blockedBy": "Manager2"
-  },
-  {
-    "apartmentId": "APT_002",
-    "roomId": "Room_02",
-    "cottageId": "Cottage_03",
-    "level": "Cottage",
-    "status": "booked",
-    "blockedBy": "PE1"
+  "APT_002": {
+    "status": null,
+    "blockedBy": null,
+    "rooms": {
+      "Room_01": {
+        "status": "booked",
+        "blockedBy": "Manager2",
+        "cottages": null
+      },
+      "Room_02": {
+        "status": null,
+        "blockedBy": null,
+        "cottages": {
+          "Cottage_03": {
+            "status": "booked",
+            "blockedBy": "PE1"
+          }
+        }
+      }
+    }
   }
-]
+}
 ```
 
-#### Benefits of Flat Structure:
+#### Benefits of Nested Tree Structure:
 
-- Easier to traverse and render in React without recursive logic.
-- Simplifies filtering and validation for each role.
-- Consistent object shape; no mixed nesting.
+- Avoids redundancy of repeating apartmentId and roomId on every row.
+- Easier to map directly into nested apartment > room > cottage layout in the frontend.
+- More natural fit for UI tree rendering (e.g., expandable apartment → rooms → cottages).
+- Consumes less bandwidth due to hierarchical grouping.
 
-#### Role Evaluation Logic:
+#### Trade-offs vs Flat Structure:
 
-- **Manager** → Show apartment unavailable if **any** entry exists for it.
-- **Senior** → Show room unavailable if **any** bed in the room is booked.
-- **PE** → Show cottage unavailable only if **that** bed is booked.
+| Flat Structure Advantage       | Tree Structure Advantage                  |
+| ------------------------------ | ----------------------------------------- |
+| Easier filtering and searching | Matches layout of apartment structure     |
+| Uniform object shape           | No redundant ID repetition                |
+| Quick flat table rendering     | Simpler to fill apartment layout in React |
 
-### Flow of Application
+Depending on how the frontend UI is designed (layout-first or list-first), this tree structure may be preferable.
+
+#### Role Evaluation Logic (same as before):
+
+- **Manager** → Show apartment unavailable if any `status` is booked at any level within that apartment.
+- **Senior** → Show room unavailable if any cottage inside the room is booked.
+- **PE** → Show cottage unavailable if that cottage is booked.
 
 1. **Login:**
 
