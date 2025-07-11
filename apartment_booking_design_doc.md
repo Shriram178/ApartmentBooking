@@ -17,14 +17,7 @@ The project will be developed in the following phases:
 | Testing                                        | 1 day          |
 | Deployment & Integration with Existing Portals | 1 day          |
 
-|   |
-| - |
 
-|   |
-| - |
-
-|   |
-| - |
 
 | **Total Estimated Time** | **7 days** |
 | ------------------------ | ---------- |
