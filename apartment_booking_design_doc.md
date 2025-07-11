@@ -20,6 +20,9 @@ The project will be developed in the following phases:
 |   |
 | - |
 
+|   |
+| - |
+
 | **Total Estimated Time** | **7 days** |
 | ------------------------ | ---------- |
 
@@ -42,7 +45,7 @@ The application allows employees to book apartments or beds according to their d
 | Category | Designation                | Booking Permission               | Sharing |
 | -------- | -------------------------- | -------------------------------- | ------- |
 | 1        | Project Engineer and below | Cottage (single bed only)        | Yes     |
-| 2        | Senior till before Manager        | One room only (shared apartment) | Yes     |
+| 2        | Senior till Manager        | One room only (shared apartment) | Yes     |
 | 3        | Manager and above          | Entire apartment only            | No      |
 
 - If any **cottage** is filled, show **room unavailable** for Category 2 and apartment unavailable for Category 3.
@@ -89,42 +92,48 @@ This is determined dynamically when the frontend queries availability for a spec
 
 ### Example API: `/api/bookings/availability?date=2025-07-11`
 
-#### Sample Response:
+#### Updated Response (Flat Structure):
 
 ```json
-{
-  "APT_001": {
-    "status": "booked",
+[
+  {
+    "apartmentId": "APT_001",
+    "roomId": null,
+    "cottageId": null,
     "level": "Apartment",
+    "status": "booked",
     "blockedBy": "Manager1"
   },
-  "APT_002": {
-    "Room_01": {
-      "status": "booked",
-      "level": "Room",
-      "blockedBy": "Manager2"
-    },
-    "Room_02": {
-      "Cottage_03": {
-        "status": "booked",
-        "level": "Cottage",
-        "blockedBy": "PE1"
-      }
-    }
+  {
+    "apartmentId": "APT_002",
+    "roomId": "Room_01",
+    "cottageId": null,
+    "level": "Room",
+    "status": "booked",
+    "blockedBy": "Manager2"
+  },
+  {
+    "apartmentId": "APT_002",
+    "roomId": "Room_02",
+    "cottageId": "Cottage_03",
+    "level": "Cottage",
+    "status": "booked",
+    "blockedBy": "PE1"
   }
-}
+]
 ```
 
-#### UI Interpretation:
+#### Benefits of Flat Structure:
 
-- If apartment is booked → entire layout disabled.
-- If a room is booked → disable the room and its beds.
-- If a cottage is booked → disable just that bed.
-- Based on selected user’s role:
-  - **Manager** will see apartment unavailable if **any room or bed** is occupied.
-  - **Senior** will see room unavailable if **any bed in that room** is occupied.
-  - **PE** will only see unavailable if the specific cottage is booked.
-- In all cases where a booking is blocked, show **[Send Request]** option.
+- Easier to traverse and render in React without recursive logic.
+- Simplifies filtering and validation for each role.
+- Consistent object shape; no mixed nesting.
+
+#### Role Evaluation Logic:
+
+- **Manager** → Show apartment unavailable if **any** entry exists for it.
+- **Senior** → Show room unavailable if **any** bed in the room is booked.
+- **PE** → Show cottage unavailable only if **that** bed is booked.
 
 ### Flow of Application
 
