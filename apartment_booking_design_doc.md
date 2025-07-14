@@ -14,12 +14,12 @@ The project will be developed in the following phases:
 |     - Admin Dashboard & Drag-Drop UI           | 1 day          |
 |     - Mail Request Handling                    | 4 hours        |
 |     - Analytics Dashboard                      | 4 hours        |
-| Testing                                        | 1 day          |
-| Deployment & Integration with Existing Portals | 1 day          |
+| Testing                                        | 6 hours          |
+| Deployment & Integration  | 4 hours          |
 
 
 
-| **Total Estimated Time** | **7 days** |
+| **Total Estimated Time** | **6 days** |
 | ------------------------ | ---------- |
 
 # Design
