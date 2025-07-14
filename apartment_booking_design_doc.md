@@ -187,7 +187,7 @@ Depending on how the frontend UI is designed (layout-first or list-first), this 
 
 ### UI/UX
 
-- SPA built using React.
+- SPA built using Next.js.
 - Admin drag-drop UI: `react-beautiful-dnd` or similar.
 - City & Apartment filter.
 - Visual layout for selecting beds/rooms.
