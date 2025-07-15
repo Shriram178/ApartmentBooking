@@ -3,23 +3,23 @@
 Time Estimation\
 The project will be developed in the following phases:
 
-| Phase                                          | Estimated Time |
+| Phase                                          | Target Date |
 | ---------------------------------------------- | -------------- |
-| Requirement Analysis                           | 1 day          |
-| System Design                                  | 1 day          |
-| Development                                    | 3 days         |
-|     - Database Schema Design                   | 3 hours        |
-|     - Authentication & Role Logic              | 4 hours        |
-|     - Booking Flow Implementation              | 1 day          |
-|     - Admin Dashboard & Drag-Drop UI           | 1 day          |
-|     - Mail Request Handling                    | 4 hours        |
-|     - Analytics Dashboard                      | 4 hours        |
-| Testing                                        | 6 hours          |
-| Deployment & Integration  | 4 hours          |
+| Requirement Analysis                           |     10 Jul 2025     |
+| System Design                                  | 11 Jul 2025         |
+| Development                                    | 16 Jul 2025      |
+|     - Database Schema Design                   | 14 Jul 2025       |
+|     - Authentication & Role Logic              | 14 Jul 2025        |
+|     - Booking Flow Implementation              | 14 Jul 2025          |
+|     - Admin Dashboard & Drag-Drop UI           | 15 Jul 2025          |
+|     - Mail Request Handling                    | 16 Jul 2025        |
+|     - Analytics Dashboard                      | 16 Jul 2025     |
+| Testing                                        | 17 Jul 2025         |
+| Deployment & Integration  | 18 Jul 2025          |
 
 
 
-| **Total Estimated Time** | **6 days** |
+| **Total Estimated Time** | **7 days** |
 | ------------------------ | ---------- |
 
 # Design
