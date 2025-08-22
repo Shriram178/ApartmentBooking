@@ -2,8 +2,7 @@
  
 ## Problem statement
  
-**"We need a comprehensive apartment booking system that supports individual and team accommodations with role-based allocation and administrative management"**
- 
+
 The customer requires an application to facilitate individual and team-based accommodation bookings while allowing administrators to manage and allocate accommodations efficiently. The system must support flexible date management, gender-based restrictions, role-based accommodation assignment (Manager -> Flat, Lead -> Room, Engineer -> Bed), and complex team booking logic with individual member cancellation capabilities. The application must integrate with the existing SIM tool built using React, Express, Node.js, and PostgreSQL.
  
 ## Implementation/Design
