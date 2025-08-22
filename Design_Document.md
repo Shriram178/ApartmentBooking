@@ -253,5 +253,6 @@ GET    /api/version
 
  
 ### Team Booking Sequence Diagram
-<img width="395" height="850" alt="image" src="https://github.com/user-attachments/assets/a57a25d5-54e8-48c6-ad3f-f769731f4fa4" />
+<img width="3468" height="8027" alt="image" src="https://github.com/user-attachments/assets/b1902835-5e4e-4665-b1af-a16a59c252c0" />
+
 
