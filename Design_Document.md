@@ -249,7 +249,9 @@ GET    /api/version
 ```
  
 ### Individual Booking Sequence Diagram
+<img width="3342" height="3418" alt="image" src="https://github.com/user-attachments/assets/9ea412ae-58c9-4fd2-b4ee-d556a52a12a9" />
 
  
 ### Team Booking Sequence Diagram
+<img width="395" height="850" alt="image" src="https://github.com/user-attachments/assets/a57a25d5-54e8-48c6-ad3f-f769731f4fa4" />
 
