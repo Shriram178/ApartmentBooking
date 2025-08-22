@@ -21,7 +21,8 @@ The application allows users to book accommodations for themselves or teams by s
 ### Database Schema
  
 
- 
+ <img width="6232" height="5426" alt="image" src="https://github.com/user-attachments/assets/9c03f1bc-923d-4cd0-99a6-85e361d6ee32" />
+
 
  
 ### API Design Structure
